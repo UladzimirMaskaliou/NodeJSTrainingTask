@@ -15,6 +15,8 @@
     "@babel/node": "^7.2.2",
     "@babel/preset-env": "^7.3.1",
     "Babel": "0.0.1",
+    "collections": "^5.1.8",
+    "csvtojson": "^2.0.8",
     "env": "0.0.2",
     "nodemon": "^1.18.10",
     "preset": "^1.0.0",
