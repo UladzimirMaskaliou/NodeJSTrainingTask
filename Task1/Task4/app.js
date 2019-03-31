@@ -46,7 +46,7 @@ function localAuthentication(username, password, done) {
 
 passport.use(new LocalStrategy(localAuthentication.bind(this)));
 
-app.post('/login',
+app.post('/api/auth/local',
     passport.authenticate('local', {successRedirect: '/success', failureRedirect: '/error', session: false}));
 
 // Passport facebook strategy
