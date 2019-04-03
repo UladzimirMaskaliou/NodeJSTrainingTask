@@ -4,13 +4,16 @@ import jwt from 'jsonwebtoken';
 const authRoute = express.Router();
 
 authRoute.post('/auth', (req, res) => {
-     let user = res.locals.users.find(user =>
-        user.name === req.body.username && user.password === req.body.password);
-
-    if (user === undefined) {
+    res.locals.user.findOne({
+        where: {
+            username: req.body.username,
+            password: req.body.password
+        }
+    }).then(user => {
+    if (!user) {
         res.status(404).send({'code': 404, 'message': 'Not found'});        
     } else {
-        let payload = {'id': user.id, 'name': user.name};
+        let payload = {'id': user.id, 'username': user.username};
         let token = jwt.sign(payload, 'secret', {expiresIn: 90});
         res.send({
             'code': 200,
@@ -18,12 +21,13 @@ authRoute.post('/auth', (req, res) => {
             'data': {
                 'user': {
                     'email': user.email,
-                    'username': user.name
+                    'username': user.username
                 }
             },
             'token': token
         }); 
     }
+    });
 });
 
 export default authRoute;
