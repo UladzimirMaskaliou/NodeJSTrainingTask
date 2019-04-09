@@ -1,0 +1,275 @@
+---
+swagger: "2.0"
+info:
+  description: Task8 API
+  version: 1.0.0
+  title: NodeJS HM8
+  contact:
+    email: uladzimir_maskaliou@epam.com
+host: localhost:9080
+basePath: /api
+tags:
+- name: product
+  description: Products tags
+- name: user
+  description: Users tags
+- name: city
+  description: Cities tags
+schemes:
+- http
+paths:
+  /swagger:
+    x-swagger-pipe: swagger_raw
+  /products:
+    get:
+      tags:
+      - product
+      summary: Returns ALL products
+      description: Returns ALL products
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Product'
+    post:
+      tags:
+      - product
+      summary: Add new product and return it
+      description: Add new product and return it
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: product
+        description: Product to be added
+        required: true
+        schema:
+          $ref: '#/definitions/Product'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Product'
+    x-swagger-router-controller: products
+  /products/{id}:
+    get:
+      tags:
+      - product
+      summary: Return product by id
+      description: Return product by id
+      operationId: getProductById
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        description: ID of product that needs to be returned
+        required: true
+        type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Product'
+    delete:
+      tags:
+      - product
+      summary: Deletes product
+      description: Deletesproduct
+      operationId: deleteProductById
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        description: ID of product that should be deleted
+        required: true
+        type: string
+      responses:
+        200:
+          description: OK
+    x-swagger-router-controller: products
+  /users:
+    get:
+      tags:
+      - user
+      summary: Return all users
+      description: Return all users
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+    x-swagger-router-controller: users
+  /users/{id}:
+    delete:
+      tags:
+      - user
+      summary: Delete user
+      description: Delete user
+      operationId: deleteUserById
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        description: Id of user that should be deleted
+        required: true
+        type: string
+      responses:
+        200:
+          description: OK
+    x-swagger-router-controller: users
+  /random:
+    get:
+      tags:
+      - city
+      summary: Return one random city
+      description: Return one random city
+      operationId: getRandomCity
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/City'
+    x-swagger-router-controller: cities
+  /cities:
+    get:
+      tags:
+      - city
+      summary: Returns all cities
+      description: Returns all cities
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/City'
+    post:
+      tags:
+      - city
+      summary: Adds new city and returns it
+      description: Adds new city and returns it
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: city
+        required: true
+        schema:
+          $ref: '#/definitions/City'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/City'
+    x-swagger-router-controller: cities
+  /cities/{id}:
+    put:
+      tags:
+      - city
+      summary: Updates SINGLE city by id if exists or adds NEW city with the given id otherwise
+      description: Updates SINGLE city by id if exists or adds NEW city with the given id otherwise
+      operationId: updateCityByName
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        description: name of the city to update
+        required: true
+        type: string
+      - in: body
+        name: city
+        description: city object
+        required: true
+        schema:
+          $ref: '#/definitions/City'
+      responses:
+        200:
+          description: OK
+    delete:
+      tags:
+      - city
+      summary: Deletes city
+      description: Deletes city
+      operationId: deleteCityByName
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        description: name of the city to delete
+        required: true
+        type: string
+      responses:
+        200:
+          description: OK
+    x-swagger-router-controller: cities
+definitions:
+  Product:
+    type: object
+    properties:
+      id:
+        type: string
+        example: sku1
+      displayName:
+        type: string
+        example: skuName1
+  User:
+    type: object
+    properties:
+      username:
+        type: string
+        example: userName1
+      password:
+        type: string
+        example: qwerty
+      email:
+        type: string
+        format: /.*?@.*?\..*?/
+        example: user1@gmail.com
+  City:
+    type: object
+    properties:
+      name:
+        type: string
+        example: Brest
+      country:
+        type: string
+        example: Belarus
+      capital:
+        type: boolean
+        example: true
+        default: false
+      location:
+        $ref: '#/definitions/City_location'
+  City_location:
+    properties:
+      lat:
+        type: number
+        example: 52.097621
+      long:
+        type: number
+        example: 23.734051
